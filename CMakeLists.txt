@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.8)
 project(windows-chewing)
 
-add_definitions(/DHAVE_CONFIG_H=1 /D_CRT_SECURE_NO_WARNINGS)
+add_definitions(/DHAVE_CONFIG_H=1 /D_CRT_SECURE_NO_WARNINGS /D_CRT_NONSTDC_NO_DEPRECATE /D_CRT_NON_CONFORMING_SWPRINTFS)
 
 configure_file(
         ${PROJECT_SOURCE_DIR}/Include/config.h.in
@@ -12,17 +12,21 @@ include(CheckTypeSize)
 check_type_size(uint16_t UINT16_T)
 message(${UINT16_T_CODE})
 
+link_directories(${PROJECT_SOURCE_DIR}/lib)
+set(LIBCHEWING chewing.dll)
+
 include_directories(
         ${PROJECT_BINARY_DIR}/Include
         ${PROJECT_SOURCE_DIR}/Include
         ${PROJECT_SOURCE_DIR}/Include/chewing/internal
+        ${PROJECT_SOURCE_DIR}/ChewingIME
 )
 
 add_executable(big52utf8 WIN32
         ${PROJECT_SOURCE_DIR}/big52utf8/big52utf8.cpp
 )
 
-add_executable(ChewingIME
+add_executable(ChewingIME WIN32
         ${PROJECT_SOURCE_DIR}/ChewingIME/Window.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/ChewingIME.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/StatusWnd.cpp
@@ -39,6 +43,8 @@ add_executable(ChewingIME
         ${PROJECT_SOURCE_DIR}/ChewingIME/CandList.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/XPToolbar.cpp
 )
+#target_link_libraries(ChewingIME ${LIBCHEWING} imm32.lib comctl32.lib shell32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib)
+target_link_libraries(ChewingIME ${LIBCHEWING} imm32.dll comctl32.dll user32.dll)
 
 add_executable(ChewingServer
         ${PROJECT_SOURCE_DIR}/ChewingServer/ChewingServer.cpp
