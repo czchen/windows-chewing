@@ -10,10 +10,24 @@ configure_file(
 
 include(CheckTypeSize)
 check_type_size(uint16_t UINT16_T)
-message(${UINT16_T_CODE})
 
-link_directories(${PROJECT_SOURCE_DIR}/lib)
-set(LIBCHEWING chewing.dll)
+set(CMAKE_LIBRARY_PATH
+        "C:\\Program Files (x86)\\Windows Kits\\8.0\\Lib\\win8\\um\\x86"
+        "${PROJECT_SOURCE_DIR}/lib"
+)
+
+find_library(chewing chewing)
+
+set(SYSTEM_LIB imm32 wininet comctl32 user32)
+foreach(target ${SYSTEM_LIB})
+        find_library(${target} ${target})
+endforeach()
+
+message(${chewing})
+message(${imm32})
+message(${wininet})
+message(${comctl32})
+message(${user32})
 
 include_directories(
         ${PROJECT_BINARY_DIR}/Include
@@ -43,8 +57,7 @@ add_executable(ChewingIME WIN32
         ${PROJECT_SOURCE_DIR}/ChewingIME/CandList.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/XPToolbar.cpp
 )
-#target_link_libraries(ChewingIME ${LIBCHEWING} imm32.lib comctl32.lib shell32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib)
-target_link_libraries(ChewingIME ${LIBCHEWING} imm32.dll comctl32.dll user32.dll)
+target_link_libraries(ChewingIME ${chewing} ${imm32} ${comctl32} ${user32})
 
 add_executable(ChewingServer
         ${PROJECT_SOURCE_DIR}/ChewingServer/ChewingServer.cpp
@@ -68,3 +81,4 @@ add_executable(Installer
 add_executable(OnlineUpdate
         ${PROJECT_SOURCE_DIR}/OnlineUpdate/OnlineUpdate.cpp
 )
+target_link_libraries(OnlineUpdate ${wininet})
