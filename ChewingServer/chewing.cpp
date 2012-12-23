@@ -1,4 +1,6 @@
 #include <cstring>
+#include <stdlib.h>
+#include <malloc.h>
 #include "Chewingpp.h"
 
 uint16 Chewing::g_lastPhoneSeq[MAX_PHONE_SEQ_LEN] = {0};
