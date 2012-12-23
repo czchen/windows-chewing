@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 2.8.8)
 project(windows-chewing)
 
-add_definitions(/DHAVE_CONFIG_H=1 /D_CRT_SECURE_NO_WARNINGS /D_CRT_NONSTDC_NO_DEPRECATE /D_CRT_NON_CONFORMING_SWPRINTFS)
+if (!${MSVC})
+        message(FATAL_ERROR "Visual Studio only")
+endif()
+
+add_definitions(/DHAVE_CONFIG_H=1)
+add_definitions(/D_CRT_SECURE_NO_WARNINGS=1)
+add_definitions(/D_CRT_NONSTDC_NO_DEPRECATE=1)
+add_definitions(/D_CRT_NON_CONFORMING_SWPRINTFS=1)
 
 configure_file(
         ${PROJECT_SOURCE_DIR}/Include/config.h.in
@@ -12,22 +19,9 @@ include(CheckTypeSize)
 check_type_size(uint16_t UINT16_T)
 
 set(CMAKE_LIBRARY_PATH
-        "C:\\Program Files (x86)\\Windows Kits\\8.0\\Lib\\win8\\um\\x86"
         "${PROJECT_SOURCE_DIR}/lib"
 )
-
 find_library(chewing chewing)
-
-set(SYSTEM_LIB imm32 wininet comctl32 user32)
-foreach(target ${SYSTEM_LIB})
-        find_library(${target} ${target})
-endforeach()
-
-message(${chewing})
-message(${imm32})
-message(${wininet})
-message(${comctl32})
-message(${user32})
 
 include_directories(
         ${PROJECT_BINARY_DIR}/Include
@@ -57,7 +51,7 @@ add_executable(ChewingIME WIN32
         ${PROJECT_SOURCE_DIR}/ChewingIME/CandList.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/XPToolbar.cpp
 )
-target_link_libraries(ChewingIME ${chewing} ${imm32} ${comctl32} ${user32})
+target_link_libraries(ChewingIME ${chewing} imm32.lib comctl32.lib user32.lib)
 
 add_executable(ChewingServer
         ${PROJECT_SOURCE_DIR}/ChewingServer/ChewingServer.cpp
