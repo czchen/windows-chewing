@@ -34,7 +34,7 @@ add_executable(big52utf8 WIN32
         ${PROJECT_SOURCE_DIR}/big52utf8/big52utf8.cpp
 )
 
-add_executable(ChewingIME WIN32
+add_library(ChewingIME
         ${PROJECT_SOURCE_DIR}/ChewingIME/Window.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/ChewingIME.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/StatusWnd.cpp
@@ -53,11 +53,12 @@ add_executable(ChewingIME WIN32
 )
 target_link_libraries(ChewingIME ${chewing} imm32.lib comctl32.lib user32.lib)
 
-add_executable(ChewingServer
+add_executable(ChewingServer WIN32
         ${PROJECT_SOURCE_DIR}/ChewingServer/ChewingServer.cpp
         ${PROJECT_SOURCE_DIR}/ChewingServer/main.cpp
         ${PROJECT_SOURCE_DIR}/ChewingServer/chewing.cpp
 )
+target_link_libraries(ChewingServer ${chewing})
 
 add_executable(HashEd
         ${PROJECT_SOURCE_DIR}/HashEd-UTF8/CHashContext.cpp
