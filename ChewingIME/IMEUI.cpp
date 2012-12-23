@@ -11,7 +11,6 @@
 #include "XPToolbar.h"
 
 #include <windows.h>
-#include <multimon.h>
 
 #include <assert.h>
 
