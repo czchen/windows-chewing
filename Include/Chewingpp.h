@@ -17,6 +17,8 @@
 #define MAX_PHONE_SEQ_LEN 50
 #endif
 
+typedef unsigned short uint16;
+
 class Chewing
 {
   ChewingContext *ctx;
