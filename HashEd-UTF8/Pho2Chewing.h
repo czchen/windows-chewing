@@ -8,6 +8,8 @@
 #include <tchar.h>
 #include <windows.h>
 
+#include "config.h"
+
 // TODO: 在此參考您的程式所需要的其他標頭
 #include "chewing-utf8-util.h"
 #include "global.h"

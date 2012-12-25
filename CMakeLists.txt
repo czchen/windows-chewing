@@ -26,6 +26,7 @@ find_library(chewing chewing)
 include_directories(
         ${PROJECT_BINARY_DIR}/Include
         ${PROJECT_SOURCE_DIR}/Include
+        ${PROJECT_SOURCE_DIR}/Include/chewing
         ${PROJECT_SOURCE_DIR}/Include/chewing/internal
         ${PROJECT_SOURCE_DIR}/ChewingIME
 )
@@ -52,6 +53,9 @@ add_library(ChewingIME
         ${PROJECT_SOURCE_DIR}/ChewingIME/XPToolbar.cpp
 )
 target_link_libraries(ChewingIME ${chewing} imm32.lib comctl32.lib user32.lib)
+set_target_properties(ChewingIME PROPERTIES
+        OUTPUT_NAME ChewingIME.ime
+)
 
 add_executable(ChewingServer WIN32
         ${PROJECT_SOURCE_DIR}/ChewingServer/ChewingServer.cpp
@@ -60,20 +64,21 @@ add_executable(ChewingServer WIN32
 )
 target_link_libraries(ChewingServer ${chewing})
 
-add_executable(HashEd
-        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/CHashContext.cpp
-        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/Pho2Chewing.cpp
-        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/StdAfx.cpp
-        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/PhraseList.cpp
-        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/HashEd.cpp
-        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/HashEdDlg.cpp
-)
+#add_executable(HashEd
+#        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/CHashContext.cpp
+#        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/Pho2Chewing.cpp
+#        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/StdAfx.cpp
+#        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/PhraseList.cpp
+#        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/HashEd.cpp
+#        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/HashEdDlg.cpp
+#)
 
-add_executable(Installer
+add_executable(Installer WIN32
         ${PROJECT_SOURCE_DIR}/Installer/Installer.cpp
 )
+target_link_libraries(Installer ${chewing} imm32.lib)
 
-add_executable(OnlineUpdate
+add_executable(OnlineUpdate WIN32
         ${PROJECT_SOURCE_DIR}/OnlineUpdate/OnlineUpdate.cpp
 )
-target_link_libraries(OnlineUpdate ${wininet})
+target_link_libraries(OnlineUpdate wininet.lib)
