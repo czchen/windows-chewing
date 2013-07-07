@@ -10,25 +10,23 @@ add_definitions(/D_CRT_SECURE_NO_WARNINGS=1)
 add_definitions(/D_CRT_NONSTDC_NO_DEPRECATE=1)
 add_definitions(/D_CRT_NON_CONFORMING_SWPRINTFS=1)
 
+set(libchewing_src ${PROJECT_SOURCE_DIR}/libchewing)
+add_subdirectory(${libchewing_src})
+
 configure_file(
-        ${PROJECT_SOURCE_DIR}/Include/config.h.in
+        ${PROJECT_SOURCE_DIR}/cmake/config.h.in
         ${PROJECT_BINARY_DIR}/Include/config.h
 )
 
-include(CheckTypeSize)
-check_type_size(uint16_t UINT16_T)
-
-set(CMAKE_LIBRARY_PATH
-        "${PROJECT_SOURCE_DIR}/lib"
-)
-find_library(chewing chewing)
+include(CheckIncludeFiles)
+check_include_files(stdint.h HAVE_STDINT_H)
 
 include_directories(
         ${PROJECT_BINARY_DIR}/Include
         ${PROJECT_SOURCE_DIR}/Include
-        ${PROJECT_SOURCE_DIR}/Include/chewing
-        ${PROJECT_SOURCE_DIR}/Include/chewing/internal
         ${PROJECT_SOURCE_DIR}/ChewingIME
+        ${libchewing_src}/include
+        ${libchewing_src}/include/internal
 )
 
 add_executable(big52utf8 WIN32
@@ -52,7 +50,7 @@ add_library(ChewingIME
         ${PROJECT_SOURCE_DIR}/ChewingIME/CandList.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/XPToolbar.cpp
 )
-target_link_libraries(ChewingIME ${chewing} imm32.lib comctl32.lib user32.lib)
+target_link_libraries(ChewingIME ${chewing_static} imm32.lib comctl32.lib user32.lib)
 set_target_properties(ChewingIME PROPERTIES
         OUTPUT_NAME ChewingIME.ime
 )
@@ -62,7 +60,7 @@ add_executable(ChewingServer WIN32
         ${PROJECT_SOURCE_DIR}/ChewingServer/main.cpp
         ${PROJECT_SOURCE_DIR}/ChewingServer/chewing.cpp
 )
-target_link_libraries(ChewingServer ${chewing})
+target_link_libraries(ChewingServer ${chewing_static})
 
 #add_executable(HashEd
 #        ${PROJECT_SOURCE_DIR}/HashEd-UTF8/CHashContext.cpp
@@ -76,7 +74,7 @@ target_link_libraries(ChewingServer ${chewing})
 add_executable(Installer WIN32
         ${PROJECT_SOURCE_DIR}/Installer/Installer.cpp
 )
-target_link_libraries(Installer ${chewing} imm32.lib)
+target_link_libraries(Installer ${chewing_static} imm32.lib)
 
 add_executable(OnlineUpdate WIN32
         ${PROJECT_SOURCE_DIR}/OnlineUpdate/OnlineUpdate.cpp
