@@ -50,7 +50,7 @@ add_library(ChewingIME
         ${PROJECT_SOURCE_DIR}/ChewingIME/CandList.cpp
         ${PROJECT_SOURCE_DIR}/ChewingIME/XPToolbar.cpp
 )
-target_link_libraries(ChewingIME ${chewing_static} imm32.lib comctl32.lib user32.lib)
+target_link_libraries(ChewingIME imm32.lib comctl32.lib user32.lib)
 set_target_properties(ChewingIME PROPERTIES
         OUTPUT_NAME ChewingIME.ime
 )
@@ -74,7 +74,7 @@ target_link_libraries(ChewingServer ${chewing_static})
 add_executable(Installer WIN32
         ${PROJECT_SOURCE_DIR}/Installer/Installer.cpp
 )
-target_link_libraries(Installer ${chewing_static} imm32.lib)
+target_link_libraries(Installer imm32.lib)
 
 add_executable(OnlineUpdate WIN32
         ${PROJECT_SOURCE_DIR}/OnlineUpdate/OnlineUpdate.cpp
