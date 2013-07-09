@@ -9,7 +9,7 @@
 #endif
 
 #include <chewing.h>
-#pragma comment(lib, "chewing")
+//#pragma comment(lib, "chewing")
 
 #ifdef	MAX_UTF8_SIZE
 #define	MAX_CHAR_SIZE	(MAX_UTF8_SIZE)
